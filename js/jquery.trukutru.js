@@ -1,7 +1,7 @@
 (function($) {
 //testing
     $.fn.trukutru = function(options) {
-
+        //comment
     	var settings = $.extend({
     		//options
     		caseSensitive: false,
