@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Trukutru Test</title>
+</head>
+<body>
+
+<input type='text' id='fruits' placeholder='primer livesearch'/>
+<div id="results">
+</div>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/jquery.trukutru.js"></script>
+
+<script>
+$(document).ready(function() {
+	$('#fruits').trukutru({
+		values : ["Apple","Banana","Orange","Melon","Lemon","Strawberry","Berry","Mango","Pineapple","Watermelon","Coconut","Tomato","Peach"],
+		noResultsText: "No fruits found",
+		caseSensitive: true
+	});
+});
+</script>
+</body>
+</html>
