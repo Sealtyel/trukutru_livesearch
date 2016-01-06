@@ -1,17 +1,16 @@
 (function($) {
 //testing
     $.fn.trukutru = function(options) {
-        //comment
-    	var settings = $.extend({
-    		//options
-            //
-            //
-            //
-            //
-            //
+        
+        var warning_no_values_sent = "Trukutru Livesearch Warning: No values sent on initialization. Please verify you are sending a correct array on the 'values' option.";
+
+        var settings = $.extend({
     		caseSensitive: false,
     		highlight: false,
-    		noResultsText: "No value found, keep writting to create element",
+            maxElements: 0,
+            maxElementsText: "You can't select more options.",
+            multiple: false,
+    		noResultsText: "No value found, keep writting to create element.",
     		requestParameters: [],
     		requestType: "POST",
     		requestUrl: "",
@@ -21,6 +20,7 @@
     		selectWithTab: true,
     		separator: ',',
     		values : [],
+            valuesType: "array",
     		//callbacks
     		onSaveError: null,
     		onSaveSuccess: null,
@@ -36,7 +36,7 @@
         return this.each( function() {
         	
         	if(settings.values.length == 0) {
-        		console.warn("Trukutru Livesearch Warning: No values sent on initialization. Please verify you are sending a correct array on the 'values' option.");
+        		console.warn(warning_no_values_sent);
         	}
 
         	$(document).on("keyup", $(this), function(event) {
