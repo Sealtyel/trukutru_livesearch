@@ -4,6 +4,11 @@
         //comment
     	var settings = $.extend({
     		//options
+            //
+            //
+            //
+            //
+            //
     		caseSensitive: false,
     		highlight: false,
     		noResultsText: "No value found, keep writting to create element",
