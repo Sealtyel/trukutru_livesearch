@@ -35,13 +35,29 @@
 
         return this.each( function() {
         	
-        	if(settings.values.length == 0) {
-        		console.warn(warning_no_values_sent);
-        	}
+            var input = $(this);
 
+            //Warn if there are no values on the array
+            if(settings.values.length == 0) {
+                console.warn(warning_no_values_sent);
+            }
+
+            //Prepare UI for trukutru livesearch
+            
+            var parent    = input.parent();
+            var container = $('<div></div>');
+            var elements  = $('<ul></ul>');
+            
+            container.addClass('trukutru-content');
+            container.append(input);
+            container.append(elements);
+
+            parent.append(container);
+            
         	$(document).on("keyup", $(this), function(event) {
-        		$('#results').empty();
-        		var matches = 0;
+        		$('.trukutru-content ul').empty();
+        		
+                var matches = 0;
 
         		var seed = $(event.target).val();
 
@@ -50,6 +66,9 @@
         		}
 
         		if(seed.length > 0) {
+                    
+                    $(event.target).closest('.trukutru-content').addClass('active');
+
 	        		for (var i = 0; i < settings.values.length; i++) {
 	        			var element = settings.values[i];
 
@@ -58,16 +77,17 @@
 	        			}
 
 	        			if(element.indexOf(seed)>-1) {
-	        				$('#results').append(settings.values[i]);
-	        				$('#results').append("<br>");
+	        				$('.trukutru-content ul').append("<li><a href='#'>"+settings.values[i]+"</li>");
 	        				matches++;
 	        			}
 	        		}
 
 	        		if(matches == 0) {
-	        			$('#results').append(settings.noResultsText);
+	        			$('.trukutru-content ul').append("<li><a href='#'>"+settings.noResultsText+"</li>");
 	        		}
-        		}
+        		}else{ 
+                    $(this).parents('trukutru-content').removeClass('active');
+                }
         	});
         });
     }

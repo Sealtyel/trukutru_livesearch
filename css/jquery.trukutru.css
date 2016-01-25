@@ -1,0 +1,30 @@
+.trukutru-content ul {
+  display: none;
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+.trukutru-content ul li {
+  border: 1px solid #000;
+  display: block;
+  float: left;
+  position: relative;
+}
+.trukutru-content ul li a {
+  background: #fff;
+  color: #000;
+  display: block;
+  padding: 5px 10px 5px 10px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.trukutru-content ul li a:hover {
+  background: #ddd;
+}
+.trukutru-content.active ul {
+  display: block;
+  position: absolute;
+}
+.trukutru-content.active li {
+  float: none;
+}
