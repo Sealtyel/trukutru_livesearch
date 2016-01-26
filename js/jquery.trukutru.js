@@ -7,10 +7,12 @@
         var settings = $.extend({
     		caseSensitive: false,
     		highlight: false,
-            maxElements: 0,
+            maxElementsDisplayed: 0, 
+            maxElementsSelected: 0,
             maxElementsText: "You can't select more options.",
             multiple: false,
     		noResultsText: "No value found, keep writting to create element.",
+            openWithFocus: false,
     		requestParameters: [],
     		requestType: "POST",
     		requestUrl: "",
@@ -24,6 +26,8 @@
     		//callbacks
     		onSaveError: null,
     		onSaveSuccess: null,
+            onNoResults: null,
+            onElementSelected: null,
     		//triggers
     		open: null,
     		close: null,
@@ -34,7 +38,7 @@
     	}, options);
 
         return this.each( function() {
-        	
+
             var input = $(this);
 
             //Warn if there are no values on the array
@@ -77,7 +81,14 @@
 	        			}
 
 	        			if(element.indexOf(seed)>-1) {
-	        				$('.trukutru-content ul').append("<li><a href='#'>"+settings.values[i]+"</li>");
+                            
+                            if(settings.highlight) {
+                                element = element.replace(seed,"<b>"+seed+"</b>");
+                            }
+
+                            if(settings.maxElementsDisplayed == 0 || $('.trukutru-content ul li').length < settings.maxElementsDisplayed) {
+	        				   $('.trukutru-content ul').append("<li><a href='#'>"+element+"</li>");
+                            }
 	        				matches++;
 	        			}
 	        		}
