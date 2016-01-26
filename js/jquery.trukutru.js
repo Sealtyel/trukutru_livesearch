@@ -2,6 +2,7 @@
 //testing
     $.fn.trukutru = function(options) {
         
+        var input = this;
         var warning_no_values_sent = "Trukutru Livesearch Warning: No values sent on initialization. Please verify you are sending a correct array on the 'values' option.";
 
         var settings = $.extend({
@@ -30,46 +31,50 @@
             onElementSelected: null
     	}, options);
 
-        return this.each( function() {
+        $.fn.trukutru.open = function() {
+            $.fn.trukutru.filter_elements(input.val());
+            input.closest('.trukutru-content').addClass('active');
+        }
 
-            var input = $(this);
+        $.fn.trukutru.close = function() {
+            input.closest('.trukutru-content').removeClass('active');
+        }
 
-            function filter_elements(seed) {
-                $('.trukutru-content ul').empty();
+        $.fn.trukutru.filter_elements = function(seed) {
+            $('.trukutru-content ul').empty();
 
-                var matches = 0;
+            var matches = 0;
+
+            if(!settings.caseSensitive) {
+                seed = seed.toLowerCase();
+            }
+
+            for (var i = 0; i < settings.values.length; i++) {
+                var element = settings.values[i];
 
                 if(!settings.caseSensitive) {
-                    seed = seed.toLowerCase();
+                    element = element.toLowerCase();
                 }
 
-                $(event.target).closest('.trukutru-content').addClass('active');
-
-                for (var i = 0; i < settings.values.length; i++) {
-                    var element = settings.values[i];
-
-                    if(!settings.caseSensitive) {
-                        element = element.toLowerCase();
+                if(element.indexOf(seed)>-1) {
+                    
+                    if(settings.highlight) {
+                        element = element.replace(seed,"<b>"+seed+"</b>");
                     }
 
-                    if(element.indexOf(seed)>-1) {
-                        
-                        if(settings.highlight) {
-                            element = element.replace(seed,"<b>"+seed+"</b>");
-                        }
-
-                        if(settings.maxElementsDisplayed == 0 || $('.trukutru-content ul li').length < settings.maxElementsDisplayed) {
-                           $('.trukutru-content ul').append("<li><a href='#'>"+element+"</li>");
-                        }
-                        matches++;
+                    if(settings.maxElementsDisplayed == 0 || $('.trukutru-content ul li').length < settings.maxElementsDisplayed) {
+                       $('.trukutru-content ul').append("<li><a href='#'>"+element+"</li>");
                     }
-                }
-                
-
-                if(matches == 0) {
-                    $('.trukutru-content ul').append("<li><a href='#'>"+settings.noResultsText+"</li>");
+                    matches++;
                 }
             }
+            
+            if(matches == 0) {
+                $('.trukutru-content ul').append("<li><a href='#'>"+settings.noResultsText+"</li>");
+            }
+        }
+
+        return this.each( function() {
 
             //Warn if there are no values on the array
             if(settings.values.length == 0) {
@@ -89,19 +94,17 @@
 
             $(this).focus(function(event) {
                 if(settings.openWithFocus) {
-                    filter_elements("");
-                    $(event.target).closest('.trukutru-content').addClass('active');
+                    $.fn.trukutru.open();
                 }
             });
 
             $(this).blur(function(event) {
-                filter_elements("");
-                $(event.target).closest('.trukutru-content').removeClass('active');
+                $.fn.trukutru.close();
             });
 
         	$(document).on("keyup", $(this), function(event) {
         		var seed = $(event.target).val();
-        		filter_elements(seed);
+        		$.fn.trukutru.filter_elements(seed);
         	});
         });
     }
