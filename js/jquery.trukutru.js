@@ -27,19 +27,49 @@
     		onSaveError: null,
     		onSaveSuccess: null,
             onNoResults: null,
-            onElementSelected: null,
-    		//triggers
-    		open: null,
-    		close: null,
-    		destroy: null
-    		/*
-    		- [style-classes] (several)
-			 */
+            onElementSelected: null
     	}, options);
 
         return this.each( function() {
 
             var input = $(this);
+
+            function filter_elements(seed) {
+                $('.trukutru-content ul').empty();
+
+                var matches = 0;
+
+                if(!settings.caseSensitive) {
+                    seed = seed.toLowerCase();
+                }
+
+                $(event.target).closest('.trukutru-content').addClass('active');
+
+                for (var i = 0; i < settings.values.length; i++) {
+                    var element = settings.values[i];
+
+                    if(!settings.caseSensitive) {
+                        element = element.toLowerCase();
+                    }
+
+                    if(element.indexOf(seed)>-1) {
+                        
+                        if(settings.highlight) {
+                            element = element.replace(seed,"<b>"+seed+"</b>");
+                        }
+
+                        if(settings.maxElementsDisplayed == 0 || $('.trukutru-content ul li').length < settings.maxElementsDisplayed) {
+                           $('.trukutru-content ul').append("<li><a href='#'>"+element+"</li>");
+                        }
+                        matches++;
+                    }
+                }
+                
+
+                if(matches == 0) {
+                    $('.trukutru-content ul').append("<li><a href='#'>"+settings.noResultsText+"</li>");
+                }
+            }
 
             //Warn if there are no values on the array
             if(settings.values.length == 0) {
@@ -47,7 +77,6 @@
             }
 
             //Prepare UI for trukutru livesearch
-            
             var parent    = input.parent();
             var container = $('<div></div>');
             var elements  = $('<ul></ul>');
@@ -57,48 +86,22 @@
             container.append(elements);
 
             parent.append(container);
-            
-        	$(document).on("keyup", $(this), function(event) {
-        		$('.trukutru-content ul').empty();
-        		
-                var matches = 0;
 
-        		var seed = $(event.target).val();
-
-        		if(!settings.caseSensitive) {
-        			seed = seed.toLowerCase();
-        		}
-
-        		if(seed.length > 0) {
-                    
+            $(this).focus(function(event) {
+                if(settings.openWithFocus) {
+                    filter_elements("");
                     $(event.target).closest('.trukutru-content').addClass('active');
-
-	        		for (var i = 0; i < settings.values.length; i++) {
-	        			var element = settings.values[i];
-
-	        			if(!settings.caseSensitive) {
-	        				element = element.toLowerCase();
-	        			}
-
-	        			if(element.indexOf(seed)>-1) {
-                            
-                            if(settings.highlight) {
-                                element = element.replace(seed,"<b>"+seed+"</b>");
-                            }
-
-                            if(settings.maxElementsDisplayed == 0 || $('.trukutru-content ul li').length < settings.maxElementsDisplayed) {
-	        				   $('.trukutru-content ul').append("<li><a href='#'>"+element+"</li>");
-                            }
-	        				matches++;
-	        			}
-	        		}
-
-	        		if(matches == 0) {
-	        			$('.trukutru-content ul').append("<li><a href='#'>"+settings.noResultsText+"</li>");
-	        		}
-        		}else{ 
-                    $(this).parents('trukutru-content').removeClass('active');
                 }
+            });
+
+            $(this).blur(function(event) {
+                filter_elements("");
+                $(event.target).closest('.trukutru-content').removeClass('active');
+            });
+
+        	$(document).on("keyup", $(this), function(event) {
+        		var seed = $(event.target).val();
+        		filter_elements(seed);
         	});
         });
     }

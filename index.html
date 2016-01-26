@@ -11,12 +11,14 @@
 	<script src="js/jquery-2.1.1.min.js"></script>
 	<script src="js/jquery.trukutru.js"></script>
 	<script>
+		var my_trukutru;
 		$(document).ready(function() {
-			$('#fruits').trukutru({
+			my_trukutru = $('#fruits').trukutru({
 				values : ["Apple","Banana","Orange","Melon","Lemon","Strawberry","Berry","Mango","Pineapple","Watermelon","Coconut","Tomato","Peach"],
 				noResultsText: "No fruits found",
 				highlight: true,
-				//maxElementsDisplayed: 3
+				//maxElementsDisplayed: 3,
+				openWithFocus: true
 			});
 		});
 	</script>
