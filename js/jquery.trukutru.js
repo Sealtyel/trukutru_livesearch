@@ -40,6 +40,16 @@
             input.closest('.trukutru-content').removeClass('active');
         }
 
+        $.fn.trukutru.destroy = function() {
+            $('.trukutru-content ul').remove();
+            $('.trukutru-content').each(function() {
+                var parent = $(this).parent();
+                var input = $(this).children('input');
+                $(this).remove();
+                parent.append(input);
+            });
+        }
+
         $.fn.trukutru.filter_elements = function(seed) {
             $('.trukutru-content ul').empty();
 
