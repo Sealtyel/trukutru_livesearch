@@ -132,6 +132,19 @@
         		$.fn.trukutru.filter_elements(seed);
                 $.fn.trukutru.open();
         	});
+
+            $(document).on("keydown", $(this), function(event) {
+                switch(event.keyCode)
+                {
+                    case 38:
+                        console.log("Up!");
+                    break;
+                    case 40:
+                        console.log("Down!");
+                    break;
+
+                }
+            });
         });
     }
 }(jQuery));
