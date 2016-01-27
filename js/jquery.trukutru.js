@@ -4,6 +4,7 @@
         
         var input = this;
         var warning_no_values_sent = "Trukutru Livesearch Warning: No values sent on initialization. Please verify you are sending a correct array on the 'values' option.";
+        var warning_incorrect_json_format = "Trukutru Livesearch Warning: JSON sent as 'values' has incorrect format.";
 
         var settings = $.extend({
     		caseSensitive: false,
@@ -85,10 +86,21 @@
         }
 
         return this.each( function() {
+            console.log(settings.valuesType);
+
+            if(settings.valuesType == "json") {
+                try {
+                    settings.values = JSON.parse(settings.values);
+                }catch(e) {
+                    console.warn(warning_incorrect_json_format);
+                    return;
+                }
+            }
 
             //Warn if there are no values on the array
             if(settings.values.length == 0) {
                 console.warn(warning_no_values_sent);
+                return;
             }
 
             //Prepare UI for trukutru livesearch
