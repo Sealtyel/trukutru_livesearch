@@ -82,6 +82,9 @@
             
             if(matches == 0) {
                 $('.trukutru-content ul').append("<li><a href='#'>"+settings.noResultsText+"</li>");
+                if(typeof settings.onNoResults == 'function') {
+                    settings.onNoResults.call(this);
+                }
             }
         }
 
@@ -127,6 +130,7 @@
         	$(document).on("keyup", $(this), function(event) {
         		var seed = $(event.target).val();
         		$.fn.trukutru.filter_elements(seed);
+                $.fn.trukutru.open();
         	});
         });
     }

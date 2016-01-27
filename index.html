@@ -17,8 +17,11 @@
 				values: ["Apple", "Banana", "Orange", "Melon", "Lemon", "Strawberry", "Berry", "Mango", "Pineapple", "Watermelon", "Coconut", "Tomato", "Peach"],
 				noResultsText: "No fruits found",
 				highlight: true,
-				openWithFocus: true
-			});
+				//openWithFocus: true,
+				onNoResults: function() {
+					console.log("no results found");
+				}
+			});		
 		});
 	</script>
 </body>
